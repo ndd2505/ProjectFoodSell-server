@@ -37,14 +37,8 @@ app.get('/confirmUsername/:username', (req, res)=>{
     serveraccount.confirmUsername(req, res)
 })
 
-app.get('/confirmSignUpEmail/:email', (req,res)=>{
-    serveraccount.confirmPhone(req, res)
-})
-app.get('/confirmSignUpUsername/:username', (req,res)=>{
-    serveraccount.confirmPhone(req, res)
-})
-app.get('/confirmPhone/:phone', (req,res)=>{
-    serveraccount.confirmPhone(req, res)
+app.post('/validsignup',bodyParser.json(), (req,res)=>{
+    serveraccount.validsignup(req, res)
 })
 
 app.post('/changeforgot', bodyParser.json(), (req, res)=>{
@@ -58,6 +52,7 @@ app.post('/confirmpassword', bodyParser.json(), (req,res)=>{
 app.post('/passwordchangelogin', bodyParser.json(), (req,res)=>{
     serveraccount.changepasswordlogin(req,res)
 })
+
 //user
 app.get('/users', (req,res)=>{
     serveruser.users(req,res)
@@ -65,20 +60,24 @@ app.get('/users', (req,res)=>{
 app.post('/add-user',bodyParser.json(), (req,res)=>{
     serveruser.adduser(req,res)
 })
+app.post('/valid-adduser', bodyParser.json(), (req,res)=>{
+    serveruser.validadding(req, res)
+})
 app.get('/delete-user', (req, res)=>{
     serveruser.deleteuser(req,res)
 })
 app.get('/update-user/:id', (req, res)=>{
     serveruser.getupdateuser(req,res)
 })
-app.post('/updating-user/:id', (req, res)=>{
+app.post('/updating-user/:id', bodyParser.json(), (req, res)=>{
     serveruser.updateuser(req,res)
 })
+
 //Product
 app.get('/product', (req,res)=>{
     serverproduct.product(req,res)
 })
-app.post('/add-product', (req,res)=>{
+app.post('/add-product',bodyParser.json(), (req,res)=>{
     serverproduct.addproduct(req,res)
 })
 app.get('/delete-product', (req, res)=>{
@@ -87,9 +86,10 @@ app.get('/delete-product', (req, res)=>{
 app.get('/update-product/:id', (req, res)=>{
     serverproduct.getupdateproduct(req,res)
 })
-app.post('/updating-product/:id', (req, res)=>{
+app.post('/updating-product/:id',bodyParser.json() ,(req, res)=>{
     serverproduct.updateproduct(req,res)
-    })
+})
+
 //customer
 app.get('/customer', (req,res)=>{
     servercustomer.customer(req,res)
@@ -100,15 +100,16 @@ app.get("/updatecus/:id", (req,res)=>{
 app.get('/delete-customer', (req, res)=>{
     servercustomer.deletecustomer(req,res)
 })
-app.post('/add-customer', (req,res)=>{
+app.post('/add-customer',bodyParser.json(), (req,res)=>{
     servercustomer.addcustomer(req,res)
 })
 app.post('/updated/:id',bodyParser.json() ,(req, res)=>{
     servercustomer.updated(req , res)
 })
+
 //order
 app.get('/orders', (req, res)=>{
-    serverorder.orders(res)
+    serverorder.orders(req,res)
 })
 app.get('/orderplacerdetail/:id', (req, res)=>{
     serverorder.orderplacerdetail(req.params.id,res)
@@ -125,6 +126,7 @@ app.post("/addorderplacer",bodyParser.json() ,(req,res)=>{
 app.get("/ordercusview/:id", (req,res)=>{
     serverorder.ordercusview(req,res)
 })
+
 //chart
 app.get("/charttotal", (req, res)=>{
     serverchart.getcharttotal(req, res)

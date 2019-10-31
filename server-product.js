@@ -29,8 +29,9 @@ exports.updateproduct = (req,res)=>{
             console.log('failedddd', err)
         }else{
             console.log("Update Item Success")
+            res.sendStatus(200)
         }
-        res.redirect('/admin/menu')
+        
     })
 }
 
@@ -69,13 +70,13 @@ exports.addproduct =(req,res)=>{
     const addproductinfo=req.body.info
     const addproducttype=req.body.type
 
-    connection.query("insert into productinfo values (null,?,?,?,?,?,?)", [addproducname, addproductimage, addproductprice, addproductpromotionprice,addproductinfo,addproducttype], (err, result)=>{
+    connection.query("insert into productinfo values (null,?,?,?,?,?,?)", [addproducname, addproductimage, parseInt(addproductprice), parseInt(addproductpromotionprice),addproductinfo,addproducttype], (err, result)=>{
         if(err){
             console.log(err)
         }else{
             console.log('insert Success')
+            res.sendStatus(200)
         }
-        res.redirect('/admin/menu')
     })
 }
 

@@ -31,16 +31,103 @@ exports.orderplacerdetail = (orderid,res)=>{
         res.json(row)
     })
 }
-exports.orders = (res) =>{
-    const sqlorder="select * from orders"
-    connection.query(sqlorder, (err, row)=>{
-        if(err){
-            console.log(err)
+exports.orders = (req,res) =>{
+    
+    const offset = req.query.offset
+    const max = req.query.max
+    const orderby = req.query.orderby
+    const sort = req.query.sort
+    const searchobj ='%'+ req.query.search +'%'
+
+    if(req.query.search==null || req.query.search=='')
+    {
+    if(offset==null, max==null){
+            connection.query("select * from orders ORDER BY orderid asc",(err, rows) =>{
+        if (err){
+            console.log('failedddd', err)
         }else{
-            console.log("fetch orders success")
+            console.log("Success fetch MySQL")
         }
-        res.json(row)
+            res.json(rows)
     })
+    }//pagination
+    else{
+    if(orderby==null){    
+        connection.query("select * from orders ORDER BY orderid DESC limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
+        if (err){
+            console.log('failedddd', err)
+        }else{
+            console.log("Success fetch MySQL")
+        }
+            res.json(rows)
+    })//sort
+    }else{
+        if(sort==null){
+            connection.query("select * from orders ORDER BY "+ orderby +" DESC limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
+            if (err){
+                console.log('failedddd', err)
+            }else{
+                console.log("Success fetch MySQL")
+            }
+                res.json(rows)
+            })  
+        }else{
+            connection.query("select * from orders ORDER BY "+ orderby +" "+sort+" limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
+            if (err){
+                console.log('failedddd', err)
+            }else{
+                console.log("Success fetch MySQL")
+            }
+                res.json(rows)
+            }) 
+        }  
+    }
+    }
+    }//search
+    else{
+        if(offset==null, max==null){
+            connection.query("select * from orders where  name like ? ORDER BY orderid DESC",searchobj,(err, rows) =>{
+        if (err){
+            console.log('failedddd', err)
+        }else{
+            console.log("Success fetch MySQL")
+        }
+            res.json(rows)
+    })
+    }//pagination
+    else{
+    if(orderby==null){    
+        connection.query("select * from orders where  name like ? ORDER BY orderid DESC limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
+        if (err){
+            console.log('failedddd', err)
+        }else{
+            console.log("Success fetch MySQL")
+        }
+            res.json(rows)
+    })//sort
+    }else{
+        if(sort==null){
+            connection.query("select * from orders where  name like ? ORDER BY "+ orderby +" DESC limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
+            if (err){
+                console.log('failedddd', err)
+            }else{
+                console.log("Success fetch MySQL")
+            }
+                res.json(rows)
+            })  
+        }else{
+            connection.query("select * from orders where  name like ? ORDER BY "+ orderby +" "+sort+" limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
+            if (err){
+                console.log('failedddd', err)
+            }else{
+                console.log("Success fetch MySQL")
+            }
+                res.json(rows)
+            }) 
+        }  
+    }
+    }
+    }
 }
 exports.updatestatus = (req, res) =>{
     const orderid = req.query.id

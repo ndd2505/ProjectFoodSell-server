@@ -16,14 +16,15 @@ exports.updateuser = (req, res)=>{
     const updatepass=req.body.password
     const updatename=req.body.hoten
     const updateemail=req.body.email
+    const updaterole = req.body.role
 
-    connection.query("Update usertab Set username = ?, password = ?, hoten = ?, email = ? where id = ?",[updateuser, updatepass, updatename, updateemail, parseInt(updateitem)], (err, result) =>{
+    connection.query("Update usertab Set username = ?, password = ?, hoten = ?, email = ?, role = ? where id = ?",[updateuser, updatepass, updatename, updateemail, updaterole, parseInt(updateitem)], (err, result) =>{
         if (err){
             console.log('failedddd', err)
         }else{
             console.log("Update Item Success")
         }
-        res.redirect('/admin/user')
+        res.sendStatus(200)
     })
 
 }
@@ -50,24 +51,25 @@ exports.deleteuser = (req, res)=>{
         }else{
             console.log('Delete Success')
         }
-        res.redirect('/users?offset=0&max=6')
+        res.redirect('/users/?orderby=id&sort=ASC&offset=0&max=6')
     })
 }
 
 exports.adduser = (req,res)=>{
-    console.log('success')
+
     const createuser=req.body.username
     const createpass=req.body.password
     const createname=req.body.hoten
     const createemail=req.body.email
+    const createrole = req.body.role
 
-    connection.query("insert into usertab values (null,?,?,?,?)", [createuser, createpass, createname, createemail], (err, result)=>{
+    connection.query("insert into usertab values (null,?,?,?,?,?)", [createuser, createpass, createname, createemail, createrole], (err, result)=>{
         if(err){
             console.log(err)
         }else{
             console.log('insert Success')
         }
-        res.redirect('/admin/user')
+        res.sendStatus(200)
     })
 }
 
@@ -167,4 +169,31 @@ exports.users = (req,res)=>{
     }
     }
     }
+}
+
+//valid
+exports.validadding = (req, res) =>{
+
+    const username = req.body.username
+    const email = req.body.email
+
+    const error = {
+        username: '',
+        email: ""
+    }
+
+    connection.query("select (select count(*) from usertab  where email = ?) as email, (select count(*) from usertab  where username = ?) as username",[email, username],(err, row)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log(row)
+            if(row[0].email === 1){
+                error.email = "Email đã được sử dụng. Vui lòng sử dụng email khác"
+            }
+            if(row[0].username === 1){
+                error.username = "Username đã được sử dụng. Vui lòng sử dụng Username khác"
+            }
+            res.json(error)
+        }
+    })
 }

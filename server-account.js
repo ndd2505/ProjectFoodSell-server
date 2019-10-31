@@ -30,7 +30,7 @@ exports.loginadmin = (req,res) => {
             console.log("login failed")
         }else{
             if(row.length < 1){
-                res.sendStatus(404).json(token)
+                res.sendStatus(400)
             }else{              
                 const user = {
                     user: row[0].username,
@@ -53,7 +53,7 @@ exports.logincus = (req,res) => {
             console.log("login failed")
         }else{
             if(row.length < 1){
-                res.sendStatus(404)
+                res.sendStatus(400)
             }else{
                 const user = {
                     id: row[0].cusid,
@@ -67,6 +67,39 @@ exports.logincus = (req,res) => {
         }
     })
 }
+//signup validate
+exports.validsignup = (req, res)=>{
+    const email = req.body.email
+    const username = req.body.username
+    const phone = req.body.phone
+    const sql = "select (select count(*) from customerinfo  where email = ?) as email, (select count(*) from customerinfo  where username = ?) as username, (select count(*) from customerinfo  where phone = ?) as phone"
+    const error = {
+        email: "",
+        username: "",
+        phone: ""
+    }
+
+    connection.query(sql, [email, username, phone], (err,row)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log("success")
+            if(row[0].email > 0){
+                error.email = "email đã tồn tại "
+            }
+            if(row[0].username > 0){
+                error.username = "username đã tồn tại "
+            }
+            if(row[0].phone > 0){
+                error.phone = "số điện thoại đã tồn tại "
+            }
+        }
+        console.log(row)
+        res.json(error)
+    })
+    
+}
+
 //forgot
 exports.confirmEmail = (req, res) => {
     const email = req.params.email
@@ -87,43 +120,6 @@ exports.confirmEmail = (req, res) => {
         }
     })
 } 
-exports.confirmSingUpEmail = (req, res) => {
-    const email = req.params.email
-
-    connection.query(" select * from customerinfo where email = ?",email ,(err, row)=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log("success")
-            if(row.length === 1){
-                console.log("exist")
-                res.sendStatus(404)
-            }else{
-                console.log("confirm")
-                res.sendStatus(200)
-            }
-        }
-    })
-}
-
-exports.confirmPhone = (req,res)=>{
-    const phone = req.params.phone
-
-    connection.query("select * from customerinfo where phone = ?", parseInt(phone), (err,row)=>{
-        if(err){
-            console.log(err)
-            console.log(req.params)
-        }else{
-            console.log("success")
-            if(row.length === 1){
-                res.sendStatus(404)
-            }else{
-                res.sendStatus(200)
-            }
-        }
-    })
-}
 
 exports.confirmUsername = (req, res) => {
     const username = req.params.username
@@ -140,25 +136,6 @@ exports.confirmUsername = (req, res) => {
             }else{
                 console.log("does not exist")
                 res.sendStatus(404)
-            }
-        }
-    })
-} 
-exports.confirmSignUpUsername = (req, res) => {
-    const username = req.params.username
-
-    connection.query(" select * from customerinfo where username = ?",username ,(err, row)=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log("success")
-            if(row.length === 1){
-                console.log("exist")
-                res.sendStatus(404)
-            }else{
-                console.log("confirm ")
-                res.sendStatus(200)
             }
         }
     })

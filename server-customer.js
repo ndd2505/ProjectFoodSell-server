@@ -43,7 +43,7 @@ exports.deletecustomer = (req,res)=>{
         }else{
             console.log('Delete Success')
         }
-        res.redirect('/customer?offset=0&max=9')
+        res.redirect('/customer?offset=0&max=6')
     })
 }
 
