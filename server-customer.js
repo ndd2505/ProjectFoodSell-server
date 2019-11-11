@@ -23,7 +23,7 @@ exports.addcustomer = (req,res)=>{
     const addpassword=req.body.password
     const addphone=req.body.phone
 
-    connection.query("insert into customerinfo values (null,?,?,?,?,?,?,?)", [addcusname, addgender, parseInt(addphone), addaddress, addemail,addusername,addpassword], (err, result)=>{
+    connection.query("insert into customerinfo values (null,?,?,?,?,?,?,?)", [addcusname, addgender, addphone, addaddress, addemail,addusername,addpassword], (err, result)=>{
         if(err){
             console.log(err)
         }else{

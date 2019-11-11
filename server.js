@@ -36,6 +36,9 @@ app.get('/confirmEmail/:email', (req,res)=>{
 app.get('/confirmUsername/:username', (req, res)=>{
     serveraccount.confirmUsername(req, res)
 })
+app.post('/sendconfirmcode',bodyParser.json(),(req,res)=>{
+    serveraccount.sendmail(req, res)
+})
 
 app.post('/validsignup',bodyParser.json(), (req,res)=>{
     serveraccount.validsignup(req, res)
