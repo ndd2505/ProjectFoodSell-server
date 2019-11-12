@@ -138,7 +138,7 @@ exports.updatestatus = (req, res) =>{
         }else{
             console.log(row)
         }
-        res.redirect('/orders')
+        res.redirect('/orders/?orderby=orderid&sort=DESC&offset=0&max=9')
     })
 }
 

@@ -20,7 +20,7 @@ exports.updateproduct = (req,res)=>{
     const updateproducname=req.body.productname
     const updateproductimage=req.body.image
     const updateproductprice=req.body.price
-    const updateproductpromotionprice=req.body.price
+    const updateproductpromotionprice=req.body.promotionprice
     const updateproductinfo=req.body.info
     const updateproducttype=req.body.type
 
