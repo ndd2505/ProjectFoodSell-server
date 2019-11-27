@@ -109,7 +109,12 @@ app.post('/add-customer',bodyParser.json(), (req,res)=>{
 app.post('/updated/:id',bodyParser.json() ,(req, res)=>{
     servercustomer.updated(req , res)
 })
-
+app.get('/confirmcode', (req,res) => {
+    serveraccount.confirmcode(req,res)
+})
+app.post('/confirmcode2',bodyParser.json(), (req,res) =>{
+    serveraccount.confirmcode2(req,res)
+})
 //order
 app.get('/orders', (req, res)=>{
     serverorder.orders(req,res)

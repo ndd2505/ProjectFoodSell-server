@@ -21,7 +21,7 @@ exports.orderdetail = (req,res)=>{
     })
 }
 exports.orderplacerdetail = (orderid,res)=>{
-    const sqlorder="select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders where orderid = "
+    const sqlorder="select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders where orderid = "
     connection.query(sqlorder+orderid, (err, row)=>{
         if(err){
             console.log(err)
@@ -42,7 +42,7 @@ exports.orders = (req,res) =>{
     if(req.query.search==null || req.query.search=='')
     {
     if(offset==null, max==null){
-            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders ORDER BY orderid asc",(err, rows) =>{
+            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders ORDER BY orderid asc",(err, rows) =>{
         if (err){
             console.log('failedddd', err)
         }else{
@@ -53,7 +53,7 @@ exports.orders = (req,res) =>{
     }//pagination
     else{
     if(orderby==null){    
-        connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders ORDER BY orderid DESC limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
+        connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders ORDER BY orderid DESC limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
         if (err){
             console.log('failedddd', err)
         }else{
@@ -63,7 +63,7 @@ exports.orders = (req,res) =>{
     })//sort
     }else{
         if(sort==null){
-            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders ORDER BY "+ orderby +" DESC limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
+            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders ORDER BY "+ orderby +" DESC limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
             if (err){
                 console.log('failedddd', err)
             }else{
@@ -72,7 +72,7 @@ exports.orders = (req,res) =>{
                 res.json(rows)
             })  
         }else{
-            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders ORDER BY "+ orderby +" "+sort+" limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
+            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders ORDER BY "+ orderby +" "+sort+" limit ?,?",[parseInt(offset), parseInt(max)], (err, rows) =>{
             if (err){
                 console.log('failedddd', err)
             }else{
@@ -86,7 +86,7 @@ exports.orders = (req,res) =>{
     }//search
     else{
         if(offset==null, max==null){
-            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY orderid DESC",searchobj,(err, rows) =>{
+            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY orderid DESC",searchobj,(err, rows) =>{
         if (err){
             console.log('failedddd', err)
         }else{
@@ -97,7 +97,7 @@ exports.orders = (req,res) =>{
     }//pagination
     else{
     if(orderby==null){    
-        connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY orderid DESC limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
+        connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY orderid DESC limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
         if (err){
             console.log('failedddd', err)
         }else{
@@ -107,7 +107,7 @@ exports.orders = (req,res) =>{
     })//sort
     }else{
         if(sort==null){
-            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY "+ orderby +" DESC limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
+            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY "+ orderby +" DESC limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
             if (err){
                 console.log('failedddd', err)
             }else{
@@ -116,7 +116,7 @@ exports.orders = (req,res) =>{
                 res.json(rows)
             })  
         }else{
-            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY "+ orderby +" "+sort+" limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
+            connection.query("select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders where  name like ? ORDER BY "+ orderby +" "+sort+" limit ?,?",[searchobj,parseInt(offset), parseInt(max)], (err, rows) =>{
             if (err){
                 console.log('failedddd', err)
             }else{
@@ -173,7 +173,7 @@ exports.addorderplacer = (req,res)=>{
 }
 exports.ordercusview = (req,res) =>{
     const id = req.params.id
-    const sqlquery = "select * , date_format(timeorder," + '"%D %M %Y  %hh:%mm:%ss"'+") as timesmat from orders where userid = ?"
+    const sqlquery = "select * , date_format(timeorder," + '"%D %M %Y  %kh:%mm:%ss"'+") as timesmat from orders where userid = ?"
 
     connection.query(sqlquery,parseInt(id) ,(err, row)=>{
         if(err){

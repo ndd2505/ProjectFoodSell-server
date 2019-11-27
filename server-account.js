@@ -101,43 +101,6 @@ exports.validsignup = (req, res)=>{
     
 }
 
-//forgot
-exports.sendmail = (req,res) =>{
-    const user = {
-        value: "forgot"
-    }
-    const token = ""
-    const confirmcode = req.body.confirmcode
-    if(confirmcode === "")
-        {jwt.sign(user, 'confirmcodeemailcannotguess',{ expiresIn: 60 * 5 }, (err, token)=>{
-                var transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                user: 'duyndps07538@fpt.edu.vn',
-                pass: 'duydeptrai1999'
-                }
-            });
-            var mailOptions = {
-                from: 'duyndps07538@fpt.edu.vn',
-                to: 'duy2551999@gmail.com',
-                subject: 'Sending Email using Node.js',
-                html : '<h1>This is your code to get your password</h1><p>'+token+'</p>'
-            };
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                console.log(error);
-                } else {
-                console.log('Email sent: ' + info.response);
-                res.sendStatus(201)
-                }
-            })
-            return token = token         
-        })
-    }else{
-        res.json(token)
-    } 
-    console.log(token)
-}
 exports.confirmEmail = (req, res) => {
     const email = req.params.email
 
@@ -225,4 +188,48 @@ exports.changepasswordlogin = (req,res) =>{
             res.sendStatus(200)
         }
     })
+}
+let token = []
+//forgot
+
+exports.confirmcode = (req,res) => {
+    const user = {mes:"OK"}
+    jwt.sign(user, 'sadaweqwcmszmcoiwq', (err, some)=>{
+        token.pop()
+        token.push(some)
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+            user: 'duyndps07538@fpt.edu.vn',
+            pass: 'duydeptrai1999'
+            }
+        }
+        )
+        var mailOptions = {
+            from: 'duyndps07538@fpt.edu.vn',
+            to: 'duy2551999@gmail.com',
+            subject: 'Sending Email using Node.js',
+            html : '<h1>This is your code to get your password</h1><p>'+token[0]+'</p>'
+        };
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+            console.log(error);
+            } else {
+            console.log('Email sent: ' + info.response);
+            res.sendStatus(201)
+            }
+        })  
+        console.log(token)
+    })
+        
+}
+exports.confirmcode2 = (req,res) =>{
+        if(req.body.codeconf == token[0]){
+        res.sendStatus(200)
+        token.pop()
+    }else{
+        console.log(token[0])
+        res.sendStatus(400)
+    }
+    
 }
