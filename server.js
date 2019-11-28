@@ -139,6 +139,17 @@ app.get("/ordercusview/:id", (req,res)=>{
 app.get("/charttotal", (req, res)=>{
     serverchart.getcharttotal(req, res)
 })
+app.get("/chartstatus" , (req,res) =>{
+    serverchart.getChartStatus(req, res)
+})
+
+app.get("/chartmonth" , (req,res) =>{
+    serverchart.getchartmonth(req,res)
+})
+
+app.get("/chartyear" , (req,res) =>{
+    serverchart.getchartyear(req,res)
+})
 
 //localhost:3009
 app.listen(3009, ()=>{
